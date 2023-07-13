@@ -1,8 +1,25 @@
 default:
     suites:
         default:
+            mink_session: chrome
             contexts:
-                - App\Tests\Behat\DemoContext
+                - App\Tests\Behat\Context\FeatureContext
 
     extensions:
-        FriendsOfBehat\SymfonyExtension: null
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                environment: test
+            bootstrap: tests/bootstrap.php
+
+        Behat\MinkExtension:
+            base_url: http://symfony_behat_apache:80/
+            default_session: chrome
+            javascript_session: chrome
+            sessions:
+                chrome:
+                    selenium2:
+                        wd_host: http://symfony_behat_selenium_hub:4444/wd/hub
+                        capabilities:
+                            browserName: chrome
+                            browser: chrome
+                            marionette: true

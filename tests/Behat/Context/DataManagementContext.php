@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Behat;
+namespace App\Tests\Behat\Context;
 
 use Behat\Behat\Context\Context;
 use Behat\Testwork\Hook\Scope\AfterSuiteScope;

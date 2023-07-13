@@ -3,7 +3,8 @@ Feature:
     As a user
     I want to test the homepage
 
+    @javascript
     Scenario: I go to the homepage
-        When a demo scenario sends a request to "/"
+        When I go to "/"
         Then the response should be received
-        Then I should see the text "Hello HomeController!"
+        Then I should see "Hello HomeController!" appear

@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Behat;
+namespace App\Tests\Behat\Context;
 
 use Behat\Behat\Context\Context;
+use Behat\Mink\Session;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * This context class contains the definitions of the steps used by the demo
@@ -19,19 +18,19 @@ use Symfony\Component\HttpKernel\KernelInterface;
 final class DemoContext implements Context
 {
     public function __construct(
+        private Session $session,
+        private RouterInterface $router,
         private KernelBrowser $client
     )
-    {}
+    {
+    }
 
     /**
-     * @Given I navigate to :path
-     * @When a demo scenario sends a request to :path
+     * @Then I visit some page
      */
-    public function aDemoScenarioSendsARequestTo(string $path): void
+    public function visitSomePage(): void
     {
-        // Notice that response is now an instance
-        // of \Symfony\Component\DomCrawler\Crawler
-        $this->response = $this->client->request('GET', $path);
+        $this->session->visit($this->router->generate('some_route'));
     }
 
     /**

@@ -16,6 +16,7 @@ COMPOSER        = $(EXEC_PHP) composer
 YARN            = $(EXEC_JS) yarn
 NPM				= $(EXEC_JS) npm
 EXEC_CURL		= curl -X POST -H 'Content-type: application/json' https://hooks.slack.com/services/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 --data
+BEHAT			= $(EXEC_PHP) vendor/bin/behat --config behat.yml
 
 ##
 ## Project
@@ -143,3 +144,6 @@ dump_env_dev: ## Generate .env.local.php for dev
 help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 .PHONY: help
+
+behat: # for test
+	$(BEHAT)
