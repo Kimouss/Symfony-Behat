@@ -48,7 +48,7 @@ services:
       - grid
 
   selenium-hub:
-    image: selenium/hub:4.0.0-rc-2-20210930
+    image: selenium/hub:4.1.4-20220427
     container_name: ${PROJECT_NAME}_selenium_hub
     ports:
       - "4445:4444"
@@ -59,7 +59,7 @@ services:
       - grid
 
   chrome:
-    image: selenium/node-chrome:4.0.0-rc-2-20210930
+    image: selenium/node-chrome:4.1.4-20220427
     container_name: ${PROJECT_NAME}_chrome
     shm_size: "2gb"
     ports:
@@ -70,14 +70,29 @@ services:
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
       - SE_NODE_MAX_SESSIONS=3
+      - VNC_NO_PASSWORD=1
     depends_on:
       - selenium-hub
     networks:
       - backend
       - grid
 
+  chrome_video:
+    image: selenium/video:ffmpeg-4.3.1-20220427
+    container_name: ${PROJECT_NAME}_video_chrome
+    volumes:
+      - ./.docker/test/recording:/videos
+    depends_on:
+      - chrome
+    environment:
+      - DISPLAY_CONTAINER_NAME=chrome
+      - FILE_NAME=behat_chrome.mp4
+    networks:
+      - backend
+      - grid
+
   firefox:
-    image: selenium/node-firefox:4.0.0-rc-2-20210930
+    image: selenium/node-firefox:4.1.4-20220427
     container_name: ${PROJECT_NAME}_firefox
     shm_size: "2gb"
     ports:
@@ -88,8 +103,23 @@ services:
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
       - SE_NODE_MAX_SESSIONS=3
+      - VNC_NO_PASSWORD=1
     depends_on:
       - selenium-hub
+    networks:
+      - backend
+      - grid
+
+  firefox_video:
+    container_name: ${PROJECT_NAME}_video_firefox
+    image: selenium/video:ffmpeg-4.3.1-20220427
+    volumes:
+      - ./.docker/test/recording:/videos
+    depends_on:
+      - firefox
+    environment:
+      - DISPLAY_CONTAINER_NAME=firefox
+      - FILE_NAME=behat_firefox.mp4
     networks:
       - backend
       - grid

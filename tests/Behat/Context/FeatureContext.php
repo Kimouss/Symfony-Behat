@@ -3,9 +3,13 @@
 namespace App\Tests\Behat\Context;
 
 use Behat\Behat\Context\Context;
+use Behat\Hook\AfterStep;
 use Behat\Mink\Element\DocumentElement;
 use Behat\Mink\Session;
 use Behat\MinkExtension\Context\MinkContext;
+use Behat\Step\Given;
+use Behat\Step\Then;
+use Behat\Step\When;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -14,11 +18,12 @@ use Symfony\Component\Routing\RouterInterface;
  */
 final class FeatureContext extends MinkContext
 {
-    private const SPIN_DURATION = 3;
+    private const SPIN_DURATION = 3; // 1 = 1000ms = 1sec
+    private const TIME_TO_RECORDING = 0; // 1 = 100ms = 0.1sec
 
     use AsynchronousTrait;
 
-    protected $spinDuration;
+    protected int $spinDuration;
 
     public function __construct(
         private Session $session,
@@ -29,19 +34,18 @@ final class FeatureContext extends MinkContext
         $this->spinDuration = self::SPIN_DURATION;
     }
 
-    /**
-     * @Given /^I wait "([^"]*)" seconds$/
-     */
-    public function iWaitSeconds($arg1): void
+    #[AfterStep]
+    public function waitRecording(): void
     {
-        $this->getSession()->wait($arg1 * 1000);
+        $this->getSession()->wait(self::TIME_TO_RECORDING * 100);
     }
 
-    /**
-     * @param $text
-     *
-     * @return string
-     */
+    #[Given('I wait :int seconds')]
+    public function iWaitSeconds($int): void
+    {
+        $this->getSession()->wait($int * 1000);
+    }
+
     private function textSelector($text)
     {
         //        Replace our special char with a real nbsp   //
@@ -60,40 +64,23 @@ final class FeatureContext extends MinkContext
         return $page->find('xpath', "//*[@class='$text']");
     }
 
-    /**
-     * @Given I navigate to :path
-     * @When a demo scenario sends a request to :path
-     */
-    public function aDemoScenarioSendsARequestTo(string $path): void
-    {
-        // Notice that response is now an instance
-        // of \Symfony\Component\DomCrawler\Crawler
-        $this->response = $this->client->request('GET', $path);
-    }
-
-    /**
-     * @Then the response should be received
-     */
+    #[Then('the response should be received')]
     public function theResponseShouldBeReceived(): void
     {
         assert($this->client->getResponse()->getStatusCode() === 200);
     }
 
-    /**
-     * @Then I should see the text :text
-     */
-    public function iShouldSeeTheText($text)
+    #[When('I click on link :wording')]
+    public function iClickOnLink($wording): void
     {
-        if (!str_contains($this->response->text(), $text)) {
-            throw new \RuntimeException("Cannot find expected text '$text'");
-        }
-    }
+        $page = $this->getSession()->getPage();
+        $textSelector = $this->textSelector($wording);
+        $link = $page->find('xpath', "//a[$textSelector]");
 
-    /**
-     * @When I click on :link
-     */
-    public function iClickOn($link)
-    {
-        $this->response = $this->client->clickLink($link);
+        if (!$link) {
+            throw new \ErrorException("Page does not contain $wording", $this->getSession()->getDriver());
+        }
+
+        $link->click();
     }
 }

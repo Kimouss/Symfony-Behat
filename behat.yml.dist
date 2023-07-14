@@ -20,6 +20,6 @@ default:
                     selenium2:
                         wd_host: http://symfony_behat_selenium_hub:4444/wd/hub
                         capabilities:
-                            browserName: chrome
                             browser: chrome
+                            browserName: chrome
                             marionette: true

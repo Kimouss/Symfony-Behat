@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    <h2>I am form page</h2>
+
+    {{ form_start(form, {method: 'POST'}) }}
+        <div>
+            {{ form_errors(form) }}
+        </div>
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.price) }}
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_home_index') }}">Link to index page</a>
+</div>
+{% endblock %}

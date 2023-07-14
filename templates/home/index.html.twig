@@ -5,7 +5,13 @@
 {% block body %}
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
+    <h2>I am index page</h2>
 
-    <a href="{{ path('app_home_other') }}">Link to other page</a>
+    <div>
+        <a href="{{ path('app_home_other') }}">Link to other page</a>
+    </div>
+    <div>
+        <a href="{{ path('app_home_form') }}">Link to form page</a>
+    </div>
 </div>
 {% endblock %}
