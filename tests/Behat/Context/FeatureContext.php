@@ -16,7 +16,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * Defines application features from the specific context.
  */
-final class FeatureContext extends MinkContext
+final class FeatureContext extends MinkContext implements Context
 {
     private const SPIN_DURATION = 3; // 1 = 1000ms = 1sec
     private const TIME_TO_RECORDING = 0; // 1 = 100ms = 0.1sec
@@ -28,14 +28,14 @@ final class FeatureContext extends MinkContext
     public function __construct(
         private Session $session,
         private RouterInterface $router,
-        private KernelBrowser $client
+        private KernelBrowser $client,
     )
     {
         $this->spinDuration = self::SPIN_DURATION;
     }
 
     #[AfterStep]
-    public function waitRecording(): void
+    public function waitForRecording(): void
     {
         $this->getSession()->wait(self::TIME_TO_RECORDING * 100);
     }

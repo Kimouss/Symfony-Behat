@@ -32,7 +32,7 @@ kill:
 	$(DOCKER_COMPOSE) down --volumes --remove-orphans
 
 install: ## Install and start the project
-install: .env.local network build start vendor dump_env_dev assets success
+install: .env.local network build start stop_video vendor dump_env_dev assets success
 
 network: ## Create network for project
 	docker network create $(PROJECT_NAME)_network || true
@@ -53,7 +53,11 @@ clean: kill
 success:
 	@echo '\033[1;32mInstall done\033[0m';
 
-.PHONY: build kill install reset start stop clean success
+stop_video:
+	$(DOCKER_COMPOSE) stop firefox_video || true
+	$(DOCKER_COMPOSE) stop chrome_video || true
+
+.PHONY: build kill install stop_video reset start stop clean success
 
 ##
 ## Utils

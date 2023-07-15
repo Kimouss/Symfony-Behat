@@ -3,6 +3,7 @@
 
 data/
 !data/.gitignore
+.docker/test/recording
 
 ###> symfony/framework-bundle ###
 /.env.local
