@@ -32,7 +32,7 @@ kill:
 	$(DOCKER_COMPOSE) down --volumes --remove-orphans
 
 install: ## Install and start the project
-install: .env.local network build start stop_video vendor dump_env_dev assets success
+install: .env.local behat.yml network build start stop_video vendor dump_env_dev assets success
 
 network: ## Create network for project
 	docker network create $(PROJECT_NAME)_network || true
@@ -139,7 +139,19 @@ yarn_dev:
 		cp .env .env.local;\
 	fi
 
-env_dev: .env.local dump_env_dev
+behat.yml:
+	@if [ -f behat.yml ]; \
+	then\
+		echo '\033[1;41m/!\ The .env file has changed. Please check your behat.yml file.\033[0m';\
+		diff behat.yml.dist behat.yml;\
+		touch behat.yml;\
+		exit 1;\
+	else\
+		echo cp behat.yml.dist behat.yml;\
+		cp behat.yml.dist behat.yml;\
+	fi
+
+env_dev: .env.local behat.yml dump_env_dev
 
 dump_env_dev: ## Generate .env.local.php for dev
 	$(COMPOSER) dump-env dev
