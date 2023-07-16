@@ -25,6 +25,16 @@ $ docker exec -t symfony_behat_php vendor/bin/behat
 
 By default, the tests will execute with Chrome node.
 
+If you want to run specific test, add a tag before your scenario
+```gherkin=
+@javascript @demo @tag
+Scenario: This is an example
+```
+Then run with your tag,
+```bash
+$ docker exec -t symfony_behat_php vendor/bin/behat --tags demo
+```
+
 ![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_24x24.png) Chrome
 ```bash
 $ docker exec -t symfony_behat_php vendor/bin/behat --profile chrome

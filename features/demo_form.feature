@@ -6,40 +6,40 @@ Feature:
     @javascript @form
     Scenario: I go to product page
         When I go to "/"
-        Then the response should be received
+        And the response should be received
         And I should see "Hello HomeController!" appear
         And I should see "Link to form page" appear
-        And I wait "2" seconds
+        Then I wait "2" seconds
         
         When I click on link "Link to form page"
-        Then I should be redirected to "/form"
-        And I should see "I am form page" appear
+        And I should be redirected to "/form"
+        Then I should see "I am form page" appear
 
         When I click on link "Link to index page"
-        Then I should be redirected to "/"
-        And I should see "I am index page" appear
+        And I should be redirected to "/"
+        Then I should see "I am index page" appear
 
     @javascript @form
     Scenario: I want to submit a product
         When I go to "/form"
-        Then the response should be received
-        And I should see "I am form page" appear
+        And the response should be received
+        Then I should see "I am form page" appear
 
         When I fill in "Name" with "Test"
-        Then I fill in "Description" with "This is a short description"
-        And I fill in "Price" with "42"
+        And I fill in "Description" with "This is a short description"
+        Then I fill in "Price" with "42"
 
         When I press "Submit"
-        Then I should see "I am valid page" appear
+        And I should see "I am valid page" appear
         And I should see "Product:" appear
         And I should see "Name: Test" appear
         And I should see "Description: This is a short description" appear
-        And I should see "Price: €42.00" appear
+        Then I should see "Price: €42.00" appear
 
     @javascript @form
     Scenario Outline: I test fields form error
         When I go to "/form"
-        Then the response should be received
+        And the response should be received
         And I should see "I am form page" appear
 
         When I fill in "Name" with "<Name>"

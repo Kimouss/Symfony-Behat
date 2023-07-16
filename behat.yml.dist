@@ -24,6 +24,11 @@ default:
                 capabilities:
                     browserName: "chrome"
                     browser: "chrome"
+                    chrome:
+                        switches:
+                            - "--start-maximized"
+                            - "--start-fullscreen"
+                            - "--window-size=1200,600"
 
 chrome:
     extensions:
