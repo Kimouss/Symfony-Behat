@@ -23,8 +23,6 @@ or
 $ docker exec -t symfony_behat_php vendor/bin/behat
 ```
 
-By default, the tests will execute with Chrome node.
-
 If you want to run specific test, add a tag before your scenario
 ```gherkin=
 @javascript @demo @tag
@@ -34,6 +32,9 @@ Then run with your tag,
 ```bash
 $ docker exec -t symfony_behat_php vendor/bin/behat --tags demo
 ```
+### Browser
+
+By default, the tests will execute with Chrome node.
 
 ![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_24x24.png) Chrome
 ```bash
@@ -46,7 +47,7 @@ But you can execute with Firefox node
 $ docker exec -t symfony_behat_php vendor/bin/behat --profile firefox
 ```
 
-## Preview
+### Preview
 This project integrates a test visualization (headless) with Selenium Grid
 
 ![Selenium Grid](https://raw.githubusercontent.com/Kimouss/Symfony-Behat/main/doc/images/selenium_grid.png)
