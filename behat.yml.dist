@@ -27,8 +27,7 @@ default:
                     chrome:
                         switches:
                             - "--start-maximized"
-                            - "--start-fullscreen"
-                            - "--window-size=1200,600"
+                            - "--window-size=1920,1080"
 
 chrome:
     extensions:
